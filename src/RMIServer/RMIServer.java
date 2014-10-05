@@ -3,60 +3,83 @@ package RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.SocketImpl;
+import java.lang.reflect.InvocationTargetException;
+import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import Messages.MethodCallMessage;
+import Messages.MethodReturnMessage;
 import Messages.RegistryJobMessage;
 import Registry.RMIRegistry;
 
 
 public class RMIServer {
-	private int port_number;
+    private String hostname;
+	private int port;
 	private ServerSocket server_socket;
 	private Connector connection_manager;
 	private RMIRegistry registry;
-	private ConcurrentHashMap<Integer,RMICommunicator> communicator_cache; 
-	public RMIServer(int port){
-		this.port_number = port_number;
+	private ConcurrentHashMap<Integer,RMICommunicator> communicator_cache;
+
+	public RMIServer()
+    {
+        try {
+            this.hostname = InetAddress.getLocalHost().getHostName();
+            server_socket = new ServerSocket(0);
+            this.port = server_socket.getLocalPort();
+        } catch (Exception e) {
+            System.out.println("MASTER SERVER: Get Local Host and Port Failed");
+            return;
+        }
+
+        System.out.println("Server Host: " + hostname);
+        System.out.println("Server Port: " + port);
+
 		this.communicator_cache = new ConcurrentHashMap<Integer,RMICommunicator>();
-		registry = new RMIRegistry();
+		registry = new RMIRegistry(hostname,port);
 	}
 	public void start() {
 		connection_manager = new Connector(this);
 		Thread connector = new Thread(connection_manager);
-		Thread RMIRegistry = new Thread(registry);
+		Thread RMIRegistryThread = new Thread(registry);
 		connector.start();
-		RMIRegistry.start();
-		try {
-			server_socket = new ServerSocket(port_number);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		RMIRegistryThread.start();
+
 		while(true){
 			try {
 				Socket socket = server_socket.accept();
 				ObjectInputStream input_stream = new ObjectInputStream(socket.getInputStream());
 				Object message = input_stream.readObject();
+                ObjectOutputStream output_stream = new ObjectOutputStream(socket.getOutputStream());
 				if (message instanceof RegistryJobMessage){
 					
 				}
+                else if(message instanceof MethodCallMessage)
+                {
+                    /* Un-marshall method call message, execute method call, and marshall/send return value */
+                    MethodCallMessage call = (MethodCallMessage) message;
+                    Object localObj = this.registry.lookup(call.object_id).getSecondObj();
+                    Object return_value = call.method.invoke(localObj,call.args);
+                    MethodReturnMessage return_message = new MethodReturnMessage(return_value);
+                    output_stream.writeObject(return_message);
+                    socket.close();
+                    input_stream.close();
+                    output_stream.close();
+                }
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			
-		}
-		
-		
+			} catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
 	}
 	
 	public int getPort() {
-		return port_number;
+		return port;
 	}
 	
 	public ConcurrentHashMap<Integer,RMICommunicator> getCommunicatorCache(){
