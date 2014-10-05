@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import Registry.RMIRegistry;
 
 
-public class RMIServer implements Runnable {
+public class RMIServer {
 	private int port_number;
 	private ServerSocket server_socket;
 	private Connector connection_manager;
@@ -21,13 +21,31 @@ public class RMIServer implements Runnable {
 	public RMIServer(int port){
 		this.port_number = port_number;
 		this.communicator_cache = new ConcurrentHashMap<Integer,RMICommunicator>();
+		registry = new RMIRegistry();
 	}
-	@Override
-	public void run() {
+	public void start() {
 		connection_manager = new Connector(this);
 		Thread connector = new Thread(connection_manager);
+		Thread RMIRegistry = new Thread(registry);
 		connector.start();
+		RMIRegistry.start();
+		try {
+			server_socket = new ServerSocket(port_number);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		while(true){
+			try {
+				Socket socket = server_socket.accept();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
 	}
+	
 	public int getPort() {
 		return port_number;
 	}
