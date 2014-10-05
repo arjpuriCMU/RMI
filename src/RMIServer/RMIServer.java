@@ -9,10 +9,11 @@ import java.net.SocketException;
 import java.net.SocketImpl;
 import java.util.concurrent.ConcurrentHashMap;
 
+import Messages.RegistryJobMessage;
 import Registry.RMIRegistry;
 
 
-public class RMIServer implements Runnable {
+public class RMIServer {
 	private int port_number;
 	private ServerSocket server_socket;
 	private Connector connection_manager;
@@ -21,13 +22,39 @@ public class RMIServer implements Runnable {
 	public RMIServer(int port){
 		this.port_number = port_number;
 		this.communicator_cache = new ConcurrentHashMap<Integer,RMICommunicator>();
+		registry = new RMIRegistry();
 	}
-	@Override
-	public void run() {
+	public void start() {
 		connection_manager = new Connector(this);
 		Thread connector = new Thread(connection_manager);
+		Thread RMIRegistry = new Thread(registry);
 		connector.start();
+		RMIRegistry.start();
+		try {
+			server_socket = new ServerSocket(port_number);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		while(true){
+			try {
+				Socket socket = server_socket.accept();
+				ObjectInputStream input_stream = new ObjectInputStream(socket.getInputStream());
+				Object message = input_stream.readObject();
+				if (message instanceof RegistryJobMessage){
+					
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		
+		
 	}
+	
 	public int getPort() {
 		return port_number;
 	}

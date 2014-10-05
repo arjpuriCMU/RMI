@@ -17,7 +17,7 @@ public class RemoteObjectReference implements Serializable {
 	}
 	
 	public String getInterfaceName(){
-		return this.interface_name;
+		return this.interface_name; 
 	}
 	
 	public Object getStub() throws ClassNotFoundException{
