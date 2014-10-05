@@ -9,6 +9,7 @@ import java.net.SocketException;
 import java.net.SocketImpl;
 import java.util.concurrent.ConcurrentHashMap;
 
+import Messages.RegistryJobMessage;
 import Registry.RMIRegistry;
 
 
@@ -37,7 +38,15 @@ public class RMIServer {
 		while(true){
 			try {
 				Socket socket = server_socket.accept();
+				ObjectInputStream input_stream = new ObjectInputStream(socket.getInputStream());
+				Object message = input_stream.readObject();
+				if (message instanceof RegistryJobMessage){
+					
+				}
 			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
