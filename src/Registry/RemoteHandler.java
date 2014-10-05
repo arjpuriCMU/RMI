@@ -22,7 +22,8 @@ public class RemoteHandler implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
-		// TODO Auto-generated method stub
+
+		// TODO Auto-generat	ed method stub
         //Create socket connection to server, send marshalled packet, and for returned value
         Socket s = null;
         ObjectOutputStream out = null;
@@ -57,6 +58,7 @@ public class RemoteHandler implements InvocationHandler {
             return fromServer.getRet();
         else
             return null;
+
 	}
 
 }
