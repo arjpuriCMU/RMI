@@ -1,7 +1,6 @@
 package Registry;
 
-import Messages.MarshallMessage;
-import Messages.UnMarshallMessage;
+import Messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -28,15 +27,15 @@ public class RemoteHandler implements InvocationHandler {
         Socket s = null;
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
-        MarshallMessage toServer = new MarshallMessage(object_id,method,args);
-        UnMarshallMessage fromServer = null;
+        MethodCallMessage toServer = new MethodCallMessage(object_id,method,args);
+        MethodReturnMessage fromServer = null;
         boolean fail = false;
         try {
             s = new Socket(this.hostname, this.port);
             out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
             in = new ObjectInputStream(s.getInputStream());
-            fromServer = (UnMarshallMessage) in.readObject();
+            fromServer = (MethodReturnMessage) in.readObject();
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

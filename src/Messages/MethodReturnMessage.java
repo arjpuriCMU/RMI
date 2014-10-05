@@ -3,9 +3,9 @@ package Messages;
 /**
  * Created by karansharma on 10/5/14.
  */
-public class UnMarshallMessage {
+public class MethodReturnMessage {
     private Object ret;
-    public UnMarshallMessage(Object ret)
+    public MethodReturnMessage(Object ret)
     {
         this.ret = ret;
     }
