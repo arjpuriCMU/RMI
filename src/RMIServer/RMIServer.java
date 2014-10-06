@@ -9,8 +9,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import Messages.MethodCallMessage;
 import Messages.MethodReturnMessage;
+import util.Group;
 import Messages.RegistryJobMessage;
 import Registry.RMIRegistry;
+import Registry.RemoteObjectReference;
 
 
 public class RMIServer {
@@ -44,7 +46,7 @@ public class RMIServer {
 		Thread RMIRegistryThread = new Thread(registry);
 		connector.start();
 		RMIRegistryThread.start();
-
+		connector.start();
 		while(true){
 			try {
 				Socket socket = server_socket.accept();
@@ -52,7 +54,23 @@ public class RMIServer {
 				Object message = input_stream.readObject();
                 ObjectOutputStream output_stream = new ObjectOutputStream(socket.getOutputStream());
 				if (message instanceof RegistryJobMessage){
+					RegistryJobMessage job_message = (RegistryJobMessage) message;
+					switch (job_message.getJob()){
 					
+					case LOOKUP:
+						Group<RemoteObjectReference,Object> object_group = registry.lookup(job_message.getObjectId());
+						break;
+					case BIND:
+						break;
+					case OBJECTS:
+						break;
+					case REBIND:
+						break;
+					default:
+						break;
+						
+					
+					}
 				}
                 else if(message instanceof MethodCallMessage)
                 {

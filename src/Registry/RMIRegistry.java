@@ -7,6 +7,7 @@ import util.Group;
 
 public class RMIRegistry implements Runnable {
 
+
 	private HashMap<String, Group<RemoteObjectReference,Object>> remote_objects;
     private String hostname;
     private int port;
@@ -24,7 +25,6 @@ public class RMIRegistry implements Runnable {
 
     public void bind(String object_id, Object obj)
     {
-        //TODO  interface name
         String interface_name = "";
         RemoteObjectReference ror = new RemoteObjectReference(this.hostname,this.port,interface_name);
         this.remote_objects.put(object_id, new Group(ror,obj));

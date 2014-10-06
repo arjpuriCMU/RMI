@@ -2,7 +2,7 @@ package Messages;
 
 import java.io.Serializable;
 
-import Registry.Job;
+import util.Job;
 import Registry.RemoteObjectReference;
 
 public class RegistryJobMessage implements Serializable {
