@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.*;
+import java.rmi.Remote;
 import java.util.concurrent.ConcurrentHashMap;
 
 import Messages.MethodCallMessage;
@@ -61,11 +63,14 @@ public class RMIServer {
 						Group<RemoteObjectReference,Object> object_group = registry.lookup(job_message.getObjectId());
 						break;
 					case BIND:
+						registry.bind(job_message.getObjectId(), obj);
 						break;
 					case OBJECTS:
 						break;
 					case REBIND:
 						break;
+					case LIST:
+						
 					default:
 						break;
 						
@@ -76,8 +81,15 @@ public class RMIServer {
                 {
                     /* Un-marshall method call message, execute method call, and marshall/send return value */
                     MethodCallMessage call = (MethodCallMessage) message;
-                    Object localObj = this.registry.lookup(call.object_id).getSecondObj();
-                    Object return_value = call.method.invoke(localObj,call.args);
+                    Remote localObj = (Remote)this.registry.lookup(call.object_id).getSecondObj();
+                    Class[] arg_types = new Class[call.arg_types.length];
+                    
+                    for (int i = 0; i < call.arg_types.length; i++){
+                    	arg_types[i] = Class.forName(call.arg_types[i]);
+                    }
+                    
+                    Method method = localObj.getClass().getMethod(call.method.getName(), arg_types);
+                    Object return_value = method.invoke(localObj,call.args);
                     MethodReturnMessage return_message = new MethodReturnMessage(return_value);
                     output_stream.writeObject(return_message);
                     socket.close();

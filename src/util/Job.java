@@ -1,5 +1,5 @@
 package util;
 
 public enum Job {
-	BIND,LOOKUP,REBIND, OBJECTS;
+	BIND,LOOKUP,REBIND,OBJECTS, LIST;
 }
