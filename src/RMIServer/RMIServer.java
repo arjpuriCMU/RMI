@@ -81,7 +81,13 @@ public class RMIServer {
                     	arg_types[i] = Class.forName(call.arg_types[i]);
                     }
                     
-                    Method method = localObj.getClass().getMethod(call.method.getName(), arg_types);
+                    Method method = null;
+					try {
+						method = localObj.getClass().getMethod(call.method.getName(), arg_types);
+					} catch (NoSuchMethodException | SecurityException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                     Object return_value = method.invoke(localObj,call.args);
                     MethodReturnMessage return_message = new MethodReturnMessage(return_value);
                     output_stream.writeObject(return_message);
