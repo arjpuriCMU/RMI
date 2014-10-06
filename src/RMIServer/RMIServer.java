@@ -62,13 +62,6 @@ public class RMIServer {
 					case LOOKUP:
 						Group<RemoteObjectReference,Object> object_group = registry.lookup(job_message.getObjectId());
 						break;
-					case BIND:
-						registry.bind(job_message.getObjectId(), obj);
-						break;
-					case OBJECTS:
-						break;
-					case REBIND:
-						break;
 					case LIST:
 						
 					default:
