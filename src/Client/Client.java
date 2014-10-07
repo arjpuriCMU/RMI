@@ -15,46 +15,30 @@ import java.net.Socket;
  * Created by karansharma on 10/7/14.
  */
 public class Client {
-    public static Object lookup(String hostname, int port, String object_id)
-    {
+    public static Object lookup(String hostname, int port, String object_id) throws IOException, ClassNotFoundException {
         //Create socket connection to server, send marshalled packet, and for returned value
         Socket s = null;
         ObjectOutputStream out = null;
         ObjectInputStream in = null;
         RegistryJobMessage toServer = new RegistryJobMessage(Job.LOOKUP,null,object_id);
         RegistryJobMessage fromServer = null;
-        boolean fail = false;
         try {
             s = new Socket(hostname, port);
             out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
             in = new ObjectInputStream(s.getInputStream());
             fromServer = (RegistryJobMessage) in.readObject();
+            in.close();
+            out.close();
+            s.close();
+            RemoteObjectReference ror = fromServer.getRef();
+            if(ror == null)
+                return null;
+            else
+                return ror.getStub();
+
         } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-                if (out != null) {
-                    out.close();
-                }
-                if (s != null) {
-                    s.close();
-                }
-            } catch (IOException e) {
-                fail = true;
-            }
+            throw e;
         }
-        if(!fail)
-            try {
-                return fromServer.getRef().getStub();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        return null;
     }
-
-
 }

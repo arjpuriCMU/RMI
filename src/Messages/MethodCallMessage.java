@@ -13,13 +13,13 @@ public class MethodCallMessage implements Serializable{
 
 
     public String object_id;
-    public Method method;
+    public String method;
     public Object[] args;
     public String[] arg_types;
 
     public MethodCallMessage(String object_id, Method method, Object[] args){
         this.object_id = object_id;
-        this.method = method;
+        this.method = method.getName();
         this.args = args;
         this.arg_types = new String[args.length];
         for (int i = 0; i < arg_types.length; i++){

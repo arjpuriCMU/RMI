@@ -29,35 +29,21 @@ public class RemoteHandler implements InvocationHandler {
         ObjectInputStream in = null;
         MethodCallMessage toServer = new MethodCallMessage(object_id,method,args);
         MethodReturnMessage fromServer = null;
-        boolean fail = false;
         try {
             s = new Socket(this.hostname, this.port);
             out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
             in = new ObjectInputStream(s.getInputStream());
             fromServer = (MethodReturnMessage) in.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (in != null) {
-                    in.close();
-                }
-                if (out != null) {
-                    out.close();
-                }
-                if (s != null) {
-                    s.close();
-                }
-            } catch (IOException e) {
-                fail = true;
-            }
-        }
-        if(!fail)
+            in.close();
+            out.close();
+            s.close();
             return fromServer.getRet();
-        else
-            return null;
 
+        } catch (Exception e) {
+            throw e;
+        }
 	}
+
 
 }

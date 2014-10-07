@@ -6,7 +6,6 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.*;
-import java.rmi.Remote;
 import java.util.concurrent.ConcurrentHashMap;
 
 import Messages.MethodCallMessage;
@@ -61,9 +60,13 @@ public class RMIServer {
 					
 					case LOOKUP:
 						Group<RemoteObjectReference,Object> object_group = registry.lookup(job_message.getObjectId());
-                        job_message.setRef(object_group.getFirstObj());
-                        output_stream.writeObject(job_message);
-						break;
+                        if(object_group == null)
+                            output_stream.writeObject(job_message);
+                        else {
+                            job_message.setRef(object_group.getFirstObj());
+                            output_stream.writeObject(job_message);
+                        }
+                        break;
 					case LIST:
 						
 					default:
@@ -76,23 +79,23 @@ public class RMIServer {
                 {
                     /* Un-marshall method call message, execute method call, and marshall/send return value */
                     MethodCallMessage call = (MethodCallMessage) message;
-                    Remote localObj = (Remote)this.registry.lookup(call.object_id).getSecondObj();
-                    Class[] arg_types = new Class[call.arg_types.length];
-                    
-                    for (int i = 0; i < call.arg_types.length; i++){
-                    	arg_types[i] = Class.forName(call.arg_types[i]);
+                    try {
+                        Object localObj = this.registry.lookup(call.object_id).getSecondObj();
+                        Class[] arg_types = new Class[call.arg_types.length];
+
+                        for (int i = 0; i < call.arg_types.length; i++) {
+                            arg_types[i] = Class.forName(call.arg_types[i]);
+                        }
+
+                        Method method = localObj.getClass().getMethod(call.method, arg_types);
+                        Object return_value = method.invoke(localObj, call.args);
+                        output_stream.writeObject(new MethodReturnMessage(return_value,false));
                     }
-                    
-                    Method method = null;
-					try {
-						method = localObj.getClass().getMethod(call.method.getName(), arg_types);
-					} catch (NoSuchMethodException | SecurityException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-                    Object return_value = method.invoke(localObj,call.args);
-                    MethodReturnMessage return_message = new MethodReturnMessage(return_value);
-                    output_stream.writeObject(return_message);
+                    catch (Exception e)
+                    {
+                        output_stream.writeObject(new MethodReturnMessage(null,true));
+                        continue;
+                    }
                 }
                 socket.close();
                 input_stream.close();
@@ -101,11 +104,7 @@ public class RMIServer {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
-			} catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+			}
         }
 	}
 	

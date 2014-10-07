@@ -10,10 +10,11 @@ public class RemoteObjectReference implements Serializable {
 	private String interface_name;
 	private String object_id;
 	
-	public RemoteObjectReference(String hostname, int port, String interface_name){
+	public RemoteObjectReference(String hostname, int port, String interface_name, String object_id){
 		this.hostname = hostname;
 		this.port = port;
 		this.interface_name = interface_name;
+        this.object_id = object_id;
 	}
 	
 	public String getInterfaceName(){

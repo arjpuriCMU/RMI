@@ -26,8 +26,7 @@ public class RMIRegistry implements Runnable {
 
     public void bind(String object_id, Object obj)
     {
-        String interface_name = "";
-        RemoteObjectReference ror = new RemoteObjectReference(this.hostname,this.port,interface_name);
+        RemoteObjectReference ror = new RemoteObjectReference(this.hostname,this.port,obj.getClass().getName() + "Interface",object_id);
         this.remote_objects.put(object_id, new Group(ror,obj));
     }
 
