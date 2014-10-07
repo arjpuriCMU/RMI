@@ -43,12 +43,12 @@ public class RMIServer {
 		registry = new RMIRegistry(hostname,port);
 	}
 	public void start() {
-		connection_manager = new Connector(this);
-		Thread connector = new Thread(connection_manager);
+//		connection_manager = new Connector(this);
+//		Thread connector = new Thread(connection_manager);
 		Thread RMIRegistryThread = new Thread(registry);
-		connector.start();
+//		connector.start();
 		RMIRegistryThread.start();
-		connector.start();
+//		connector.start();
 		while(true){
 			try {
 				Socket socket = server_socket.accept();
@@ -114,6 +114,10 @@ public class RMIServer {
 	public ConcurrentHashMap<Integer,RMICommunicator> getCommunicatorCache(){
 		return this.communicator_cache;
 	}
+	
+	public RMIRegistry getRMIRegistry(){
+		return this.registry;
+	}
 
 }
 
@@ -160,12 +164,11 @@ class Connector implements Runnable {
 		}
 		finally{
 		}
-		
 	}
 	
 	public ServerSocket getServerSocket(){
 		return this.server_socket;
 	}
-	
+
 
 }

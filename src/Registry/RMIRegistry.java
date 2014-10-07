@@ -1,6 +1,7 @@
 package Registry;
 
 import java.rmi.Remote;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import util.Group;
@@ -32,7 +33,9 @@ public class RMIRegistry implements Runnable {
 
     public String[] list()
     {
-        return (String[]) this.remote_objects.keySet().toArray();
+    	Object[] arr = this.remote_objects.keySet().toArray();
+    	String[] stringArray = Arrays.copyOf(arr, arr.length, String[].class);
+        return stringArray;
     }
 
     public Group<RemoteObjectReference,Object> lookup(String object_id)
