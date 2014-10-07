@@ -61,6 +61,8 @@ public class RMIServer {
 					
 					case LOOKUP:
 						Group<RemoteObjectReference,Object> object_group = registry.lookup(job_message.getObjectId());
+                        job_message.setRef(object_group.getFirstObj());
+                        output_stream.writeObject(job_message);
 						break;
 					case LIST:
 						
@@ -91,10 +93,10 @@ public class RMIServer {
                     Object return_value = method.invoke(localObj,call.args);
                     MethodReturnMessage return_message = new MethodReturnMessage(return_value);
                     output_stream.writeObject(return_message);
-                    socket.close();
-                    input_stream.close();
-                    output_stream.close();
                 }
+                socket.close();
+                input_stream.close();
+                output_stream.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (ClassNotFoundException e) {

@@ -1,7 +1,10 @@
 package Messages;
 
+import Registry.RemoteObjectReference;
+
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.rmi.Remote;
 
 /**
  * Created by karansharma on 10/2/14.
@@ -20,7 +23,14 @@ public class MethodCallMessage implements Serializable{
         this.args = args;
         this.arg_types = new String[args.length];
         for (int i = 0; i < arg_types.length; i++){
+            /*if(args[i] instanceof Remote)
+            {
+                //TODO get ROR for args[i]
+                args[i] = ((Remote) args[i]).object_id;
+                this.arg_types[i] = "RemoteObjectReference";
+            }*/
         	arg_types[i] = args[i].getClass().getName();
+
         }
     }
     

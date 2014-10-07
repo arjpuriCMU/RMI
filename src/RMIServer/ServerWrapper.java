@@ -15,10 +15,10 @@ public class ServerWrapper {
 		rmi_server.getRMIRegistry().bind("EchoObject1", echo1);
 		rmi_server.getRMIRegistry().bind("EchoObject2", echo2);
 		System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
-		rmi_server.getRMIRegistry().unbind("EchoObject1");
-		System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
-		rmi_server.getRMIRegistry().rebind("EchoObject1", echo1);
-		System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
+		//rmi_server.getRMIRegistry().unbind("EchoObject1");
+		//System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
+		//rmi_server.getRMIRegistry().rebind("EchoObject1", echo1);
+		//System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
 		rmi_server.start();
 	}
 	

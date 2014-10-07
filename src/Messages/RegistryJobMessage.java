@@ -20,7 +20,9 @@ public class RegistryJobMessage implements Serializable {
 	public Job getJob(){
 		return this.job;
 	}
-	
+
+    public void setRef(RemoteObjectReference ror) {this.remote_reference = ror;}
+
 	public RemoteObjectReference getRef(){
 		return this.remote_reference;
 	}
