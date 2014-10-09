@@ -48,6 +48,7 @@ public class RMIServer {
 				ObjectInputStream input_stream = new ObjectInputStream(socket.getInputStream());
 				Object message = input_stream.readObject();
                 ObjectOutputStream output_stream = new ObjectOutputStream(socket.getOutputStream());
+                MethodReturnMessage msg = null;
 				if (message instanceof RegistryJobMessage){
 					RegistryJobMessage job_message = (RegistryJobMessage) message;
 					switch (job_message.getJob()){
@@ -62,6 +63,13 @@ public class RMIServer {
                         }
                         break;
 					case LIST:
+						String[] list = registry.list();
+						if (list == null){
+							msg = new MethodReturnMessage(null, true, "No Objects Returned");
+						}
+						else{
+							msg = new MethodReturnMessage(list, false, null);
+						}
 						
 					default:
 						break;

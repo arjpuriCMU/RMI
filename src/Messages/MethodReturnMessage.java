@@ -24,4 +24,8 @@ public class MethodReturnMessage implements Serializable{
             throw new Exception(this.errorMessage);
         return this.ret;
     }
+    
+    public Object getObject(){
+    	return this.ret;
+    }
 }
