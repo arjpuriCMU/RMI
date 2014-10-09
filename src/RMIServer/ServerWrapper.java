@@ -9,8 +9,8 @@ public class ServerWrapper {
 	
 	public static void main(String[] args){
 		System.out.println("Starting Server...");
-		EchoObject echo1 = new EchoObject();
-		EchoObject echo2 = new EchoObject();
+		EchoObject echo1 = new EchoObject("hello");
+		EchoObject echo2 = new EchoObject("jojo");
 		System.out.println(Arrays.toString(rmi_server.getRMIRegistry().list()));
 		rmi_server.getRMIRegistry().bind("EchoObject1", echo1);
 		rmi_server.getRMIRegistry().bind("EchoObject2", echo2);
