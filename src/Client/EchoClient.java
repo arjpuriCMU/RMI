@@ -27,10 +27,10 @@ public class EchoClient extends Client {
             System.out.println("Result: " + result);
             echo2 = (EchoInterface) Client.lookup(serverHost, serverPort, "EchoObject2");
             System.out.println("EchoObject2 Stub Acquired");
-            String return_string = echo2.combineWithEchoObject((EchoInterface) echo1);
+            String return_string = echo2.combineWithEchoObject(echo1);
             System.out.println("Result:" + return_string);
         } catch (Exception e) {
-            System.out.print("Error in Lookup");
+            System.out.println("Error in Lookup");
             e.printStackTrace();
         }
 

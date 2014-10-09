@@ -22,12 +22,14 @@ public class RemoteObjectReference implements Serializable {
 	public String getInterfaceName(){
 		return this.interface_name; 
 	}
+
+    public String getObject_id() {return this.object_id;}
 	
 	public Object getStub() throws ClassNotFoundException{
 		Class<?> class_name = Class.forName(this.interface_name);
 		@SuppressWarnings("rawtypes")
 		Class[] new_class = new Class[]{class_name};
-		InvocationHandler remote_handler = new RemoteHandler(this.object_id,this.port,this.hostname);
+		InvocationHandler remote_handler = new RemoteHandler(this.hostname, this.port, this.interface_name, this.object_id);
 		Object proxy = Proxy.newProxyInstance(class_name.getClassLoader(),new_class, remote_handler);
 		
 		return proxy;

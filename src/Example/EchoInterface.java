@@ -8,6 +8,6 @@ import RMIServer.Remote440;
 public interface EchoInterface extends Remote440 {
 
     public String echoCombineMessage(String s1, String s2);
-    public String combineWithEchoObject(EchoInterface echo1);
+    public String combineWithEchoObject(EchoInterface o);
     public String getStoredString();
 }

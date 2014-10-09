@@ -75,17 +75,14 @@ public class RMIServer {
                     MethodCallMessage call = (MethodCallMessage) message;
                     try {
                         Object localObj = this.registry.lookup(call.object_id).getSecondObj();
-                        //Class[] arg_types = new Class[call.arg_types.length];
-
-                        /*for (int i = 0; i < call.arg_types.length; i++) {
-                            if(call.arg_types[i] == "RemoteObjectReference") //argument was a stub
+                        for (int i = 0; i < call.arg_types.length; i++) {
+                            if(call.arg_types[i] == RemoteObjectReference.class) //argument is a ROR
                             {
-                                call.args[i] = this.registry.lookup((String) call.args[i]).getSecondObj();
-                                arg_types[i] = call.args[i].getClass();
+                                RemoteObjectReference ror = (RemoteObjectReference) call.args[i];
+                                call.args[i] = this.registry.lookup(ror.getObject_id()).getSecondObj();
+                                call.arg_types[i] = Class.forName(ror.getInterfaceName());
                             }
-                            else
-                                arg_types[i] = Class.forName(call.arg_types[i]);
-                        }*/
+                        }
 
                         Method method = localObj.getClass().getMethod(call.method, call.arg_types);
                         Object return_value = method.invoke(localObj, call.args);
