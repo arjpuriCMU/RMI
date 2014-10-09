@@ -1,6 +1,6 @@
 package Client;
 
-import Example.EchoObjectInterface;
+import Example.EchoInterface;
 import Example.EchoObject;
 import Messages.MethodCallMessage;
 import Messages.MethodReturnMessage;
@@ -27,17 +27,17 @@ public class EchoClient extends Client {
 
         System.out.println("Within Client");
 
-        EchoObjectInterface echo1 = null;
-        EchoObjectInterface echo2 = null;
+        EchoInterface echo1 = null;
+        EchoInterface echo2 = null;
         try {
-            echo1 = (EchoObjectInterface) Client.lookup(serverHost, serverPort, "EchoObject1");
+            echo1 = (EchoInterface) Client.lookup(serverHost, serverPort, "EchoObject1");
             System.out.println("EchoObject1 Stub Acquired");
             String result = echo1.echoCombineMessage("TESTING", "testing");
             System.out.println("Result: " + result);
-            echo2 = (EchoObjectInterface) Client.lookup(serverHost, serverPort, "EchoObject2");
+            echo2 = (EchoInterface) Client.lookup(serverHost, serverPort, "EchoObject2");
             System.out.println("EchoObject2 Stub Acquired");
             String return_string = echo2.combineWithEchoObject((EchoObject) echo1);
-            System.out.println("Result:" + result);
+            System.out.println("Result:" + return_string);
         } catch (Exception e) {
             System.out.print("Error in Lookup");
             e.printStackTrace();

@@ -20,7 +20,7 @@ public class nthPrimeClient {
 	            prime1 = (nthPrimeInterface) Client.lookup(serverHost, serverPort, "nthPrimeObject1");
 	            System.out.println("nthPrimeObject1 Stub Acquired");
 	            System.out.println("Requesting for 3rd prime via nthPrime(int n)");
-	            int result1 = prime1.nthPrime(3);
+                int result1 = prime1.nthPrime(3);
 	            System.out.println("Result(3rd Prime): " + result1);
 	            prime2 = (nthPrimeInterface) Client.lookup(serverHost, serverPort, "nthPrimeObject2");
 	            System.out.println("nthPrimeObject2 Stub Acquired");
@@ -28,7 +28,7 @@ public class nthPrimeClient {
 	            int result2 = prime2.nthPrime(50);
 	            System.out.println("Result(50th Prime) = 229");
 	        } catch (Exception e) {
-	            System.out.print("Error in Lookup");
+	            System.out.println("Error in Lookup");
 	            e.printStackTrace();
 	        }
 	 }

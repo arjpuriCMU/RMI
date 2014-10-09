@@ -45,5 +45,10 @@ public class RemoteHandler implements InvocationHandler {
         }
 	}
 
+    public String getObject_id()
+    {
+        return this.object_id;
+    }
+
 
 }

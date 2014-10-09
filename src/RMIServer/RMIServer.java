@@ -81,19 +81,26 @@ public class RMIServer {
                     MethodCallMessage call = (MethodCallMessage) message;
                     try {
                         Object localObj = this.registry.lookup(call.object_id).getSecondObj();
-                        Class[] arg_types = new Class[call.arg_types.length];
+                        //Class[] arg_types = new Class[call.arg_types.length];
 
-                        for (int i = 0; i < call.arg_types.length; i++) {
-                            arg_types[i] = Class.forName(call.arg_types[i]);
-                        }
+                        /*for (int i = 0; i < call.arg_types.length; i++) {
+                            if(call.arg_types[i] == "RemoteObjectReference") //argument was a stub
+                            {
+                                call.args[i] = this.registry.lookup((String) call.args[i]).getSecondObj();
+                                arg_types[i] = call.args[i].getClass();
+                            }
+                            else
+                                arg_types[i] = Class.forName(call.arg_types[i]);
+                        }*/
 
-                        Method method = localObj.getClass().getMethod(call.method, arg_types);
+                        Method method = localObj.getClass().getMethod(call.method, call.arg_types);
                         Object return_value = method.invoke(localObj, call.args);
-                        output_stream.writeObject(new MethodReturnMessage(return_value,false));
+                        output_stream.writeObject(new MethodReturnMessage(return_value,false,""));
                     }
                     catch (Exception e)
                     {
-                        output_stream.writeObject(new MethodReturnMessage(null,true));
+                        e.printStackTrace();
+                        output_stream.writeObject(new MethodReturnMessage(null,true,e.getMessage()));
                         continue;
                     }
                 }

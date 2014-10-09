@@ -8,15 +8,18 @@ import java.io.Serializable;
 public class MethodReturnMessage implements Serializable{
     private Object ret;
     private boolean exception;
-    public MethodReturnMessage(Object ret, boolean exception)
+    private String errorMessage;
+
+    public MethodReturnMessage(Object ret, boolean exception, String errorMessage)
     {
         this.ret = ret;
         this.exception = exception;
+        this.errorMessage = errorMessage;
     }
 
     public Object getRet() throws Exception {
         if(exception)
-            throw new Exception();
+            throw new Exception(this.errorMessage);
         return this.ret;
     }
 }
