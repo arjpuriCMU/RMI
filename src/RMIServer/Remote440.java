@@ -1,5 +1,5 @@
 package RMIServer;
 
-public class Remote440 {
+public interface Remote440 {
 
 }

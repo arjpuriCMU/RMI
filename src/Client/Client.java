@@ -1,7 +1,5 @@
 package Client;
 
-import Messages.MethodCallMessage;
-import Messages.MethodReturnMessage;
 import Messages.RegistryJobMessage;
 import Registry.RemoteObjectReference;
 import util.Job;

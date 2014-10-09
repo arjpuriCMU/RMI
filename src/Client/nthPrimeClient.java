@@ -1,6 +1,5 @@
 package Client;
 
-import Example.nthPrimeObject;
 import Example.nthPrimeInterface;
 public class nthPrimeClient {
 	 public static void main(String args[]) {
@@ -8,7 +7,6 @@ public class nthPrimeClient {
 	            System.out.println("Invalid Arguments: Provide Server Host and Port");
 	            return;
 	        }
-
 	        String serverHost = args[0];
 	        int serverPort = Integer.parseInt(args[1]);
 
@@ -26,7 +24,7 @@ public class nthPrimeClient {
 	            System.out.println("nthPrimeObject2 Stub Acquired");
 	            System.out.println("Requesting for 50th prime via nthPrime(int n)");
 	            int result2 = prime2.nthPrime(50);
-	            System.out.println("Result(50th Prime) = 229");
+	            System.out.println("Result(50th Prime)" + result2);
 	        } catch (Exception e) {
 	            System.out.println("Error in Lookup");
 	            e.printStackTrace();

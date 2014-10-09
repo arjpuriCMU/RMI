@@ -1,20 +1,17 @@
 package Messages;
 
 import Registry.RemoteHandler;
-import Registry.RemoteObjectReference;
-
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.rmi.Remote;
 
 /**
  * Created by karansharma on 10/2/14.
  */
 public class MethodCallMessage implements Serializable{
 
-
-    public String object_id;
+	private static final long serialVersionUID = -7637433779619529656L;
+	public String object_id;
     public String method;
     public Object[] args;
     //public String[] arg_types;

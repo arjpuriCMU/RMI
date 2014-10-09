@@ -2,11 +2,10 @@ package Example;
 
 import java.io.Serializable;
 
-import RMIServer.Remote440;
+public class nthPrimeObject implements Serializable, nthPrimeInterface {
 
-public class nthPrimeObject extends Remote440 implements Serializable, nthPrimeInterface {
-	
-	
+	private static final long serialVersionUID = 3917846667995097277L;
+
 	public int nthPrime(int num){
 		int n = 1;
 		int test = 2;

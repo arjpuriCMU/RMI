@@ -6,6 +6,7 @@ import util.Job;
 import Registry.RemoteObjectReference;
 
 public class RegistryJobMessage implements Serializable {
+	private static final long serialVersionUID = -1482755404667747214L;
 	private Job job;
 	private RemoteObjectReference remote_reference;
 	private String object_id;

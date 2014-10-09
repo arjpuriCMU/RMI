@@ -2,9 +2,9 @@ package Example;
 
 import java.io.Serializable;
 
-import RMIServer.Remote440;
-
-public class EchoObject extends Remote440 implements Serializable, EchoInterface{
+public class EchoObject implements Serializable, EchoInterface{
+	
+	private static final long serialVersionUID = -1073920152080307530L;
 	private String stored_string;
 	
 	public EchoObject(String s){
@@ -15,7 +15,7 @@ public class EchoObject extends Remote440 implements Serializable, EchoInterface
 		return s1 + " " + s2;
 	}
 	
-	public String combineWithEchoObject(EchoObject o){
+	public String combineWithEchoObject(EchoInterface o){
 		return this.stored_string + o.getStoredString();
 	}
 	

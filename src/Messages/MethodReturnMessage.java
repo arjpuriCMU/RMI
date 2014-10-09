@@ -6,7 +6,9 @@ import java.io.Serializable;
  * Created by karansharma on 10/5/14.
  */
 public class MethodReturnMessage implements Serializable{
-    private Object ret;
+
+	private static final long serialVersionUID = -7963640528520898743L;
+	private Object ret;
     private boolean exception;
     private String errorMessage;
 

@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class RemoteObjectReference implements Serializable {
+	
+	private static final long serialVersionUID = 5314219215092632325L;
 	private String hostname;
 	private int port;
 	private String interface_name;
@@ -23,6 +25,7 @@ public class RemoteObjectReference implements Serializable {
 	
 	public Object getStub() throws ClassNotFoundException{
 		Class<?> class_name = Class.forName(this.interface_name);
+		@SuppressWarnings("rawtypes")
 		Class[] new_class = new Class[]{class_name};
 		InvocationHandler remote_handler = new RemoteHandler(this.object_id,this.port,this.hostname);
 		Object proxy = Proxy.newProxyInstance(class_name.getClassLoader(),new_class, remote_handler);

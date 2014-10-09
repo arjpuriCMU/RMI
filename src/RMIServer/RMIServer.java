@@ -3,7 +3,6 @@ package RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -20,7 +19,6 @@ public class RMIServer {
     private String hostname;
 	private int port;
 	private ServerSocket server_socket;
-	private Connector connection_manager;
 	private RMIRegistry registry;
 	private ConcurrentHashMap<Integer,RMICommunicator> communicator_cache;
 
@@ -42,12 +40,8 @@ public class RMIServer {
 		registry = new RMIRegistry(hostname,port);
 	}
 	public void start() {
-//		connection_manager = new Connector(this);
-//		Thread connector = new Thread(connection_manager);
 		Thread RMIRegistryThread = new Thread(registry);
-//		connector.start();
 		RMIRegistryThread.start();
-//		connector.start();
 		while(true){
 			try {
 				Socket socket = server_socket.accept();
@@ -135,16 +129,12 @@ class Connector implements Runnable {
 	private RMIServer master;
 	private ServerSocket server_socket;
 	private Socket client_socket;
-	private boolean isClosed;
-	
 	Connector(RMIServer master){
-		this.isClosed = false;
 		this.master = master;
 		
 	}
 	
 	public void setClosed(boolean b) {
-		this.isClosed = b;
 		
 	}
 

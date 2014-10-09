@@ -34,7 +34,7 @@ public class Integer440Client extends Client {
 	            System.out.println("Product Result: " + result3);
 	            System.out.println("Calculating Division of Integer440Object1 and Integer440Object2");
 	            int result4 = int1.divide((Integer440Object) int2);
-	            System.out.println("Product Result: " + result3);
+	            System.out.println("Product Result: " + result4);
 	        } catch (Exception e) {
 	            System.out.print("Error in Lookup");
 	            e.printStackTrace();

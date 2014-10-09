@@ -1,15 +1,6 @@
 package Client;
 
 import Example.EchoInterface;
-import Example.EchoObject;
-import Messages.MethodCallMessage;
-import Messages.MethodReturnMessage;
-
-import javax.sound.midi.SysexMessage;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 /**
  * Created by karansharma on 10/7/14.
@@ -36,7 +27,7 @@ public class EchoClient extends Client {
             System.out.println("Result: " + result);
             echo2 = (EchoInterface) Client.lookup(serverHost, serverPort, "EchoObject2");
             System.out.println("EchoObject2 Stub Acquired");
-            String return_string = echo2.combineWithEchoObject((EchoObject) echo1);
+            String return_string = echo2.combineWithEchoObject((EchoInterface) echo1);
             System.out.println("Result:" + return_string);
         } catch (Exception e) {
             System.out.print("Error in Lookup");

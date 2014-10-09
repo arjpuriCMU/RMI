@@ -1,6 +1,5 @@
 package Registry;
 
-import java.rmi.Remote;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -28,7 +27,7 @@ public class RMIRegistry implements Runnable {
     {
         String interface_name = obj.getClass().getName().replace("Object","Interface");
         RemoteObjectReference ror = new RemoteObjectReference(this.hostname,this.port,interface_name,object_id);
-        this.remote_objects.put(object_id, new Group(ror,obj));
+        this.remote_objects.put(object_id, new Group<RemoteObjectReference, Object>(ror,obj));
     }
 
     public String[] list()

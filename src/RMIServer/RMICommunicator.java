@@ -9,16 +9,11 @@ import java.net.SocketException;
 import Messages.ServerResponse;
 
 class RMICommunicator implements Runnable{
-	/* Each worker has its own communicator to allow transfer of messages
-	 */
-	private int id;
 	private Socket socket;
-	private RMIServer rmi_server;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	
 	RMICommunicator(RMIServer master, Socket socket){
-		this.rmi_server= master ;
 		this.socket = socket;
 	}
 	
@@ -27,7 +22,6 @@ class RMICommunicator implements Runnable{
 	}
 	
 	public void setId(int id){
-		this.id = id;
 	}
 	public ObjectInputStream getInput(){
 		return input;
@@ -44,7 +38,7 @@ class RMICommunicator implements Runnable{
 			while(true){
 				if (input == null){
 					input = new ObjectInputStream(socket.getInputStream());}
-				Object read_value =   input.readObject();
+				input.readObject();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
