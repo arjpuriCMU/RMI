@@ -1,3 +1,4 @@
+make clean
 bash bundle.sh
 
 if [ "$#" -eq 0 ]
