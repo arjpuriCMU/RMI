@@ -24,16 +24,16 @@ public class Integer440Client extends Client {
 	            System.out.println("Integer440Object1 Stub Acquired");
 	            System.out.println("Integer440Object2 Stub Acquired");
 	            System.out.println("Calculating Sum of Integer440Object1 and Integer440Object2");
-	            int result1 = int1.add((Integer440Object) int2);
+	            int result1 = int1.add(int2);
 	            System.out.println("Sum Result: " + result1);
 	            System.out.println("Calculating Difference of Integer440Object1 and Integer440Object2");
-	            int result2 = int1.subtract((Integer440Object) int2);
+	            int result2 = int1.subtract(int2);
 	            System.out.println("Difference Result: " + result2);
 	            System.out.println("Calculating Product of Integer440Object1 and Integer440Object2");
-	            int result3 = int1.multiply((Integer440Object) int2);
+	            int result3 = int1.multiply(int2);
 	            System.out.println("Product Result: " + result3);
 	            System.out.println("Calculating Division of Integer440Object1 and Integer440Object2");
-	            int result4 = int1.divide((Integer440Object) int2);
+	            int result4 = int1.divide(int2);
 	            System.out.println("Product Result: " + result4);
 	        } catch (Exception e) {
 	            System.out.print("Error in Lookup");
