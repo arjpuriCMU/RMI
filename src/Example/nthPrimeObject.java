@@ -44,7 +44,7 @@ public class nthPrimeObject extends Remote440 implements Serializable, nthPrimeI
 		System.out.println(n.nthPrime(1));
 		System.out.println(n.nthPrime(2));
 		System.out.println(n.nthPrime(3));
-		System.out.println(n.nthPrime(10));
+		System.out.println(n.nthPrime(50));
 	}
 	
 }
