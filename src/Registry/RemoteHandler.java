@@ -21,29 +21,35 @@ public class RemoteHandler implements InvocationHandler {
 		this.interface_name = interface_name;
         this.object_id = object_id;
 	}
+
+    /* Invoke function is called anytime a method is called on a proxy stub */
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
 
-		// TODO Auto-generated method stub
-        //Create socket connection to server, send marshalled packet, and for returned value
-        Socket s = null;
-        ObjectOutputStream out = null;
-        ObjectInputStream in = null;
+        //Marshalls method call
         MethodCallMessage toServer = new MethodCallMessage(object_id,method,args);
-        MethodReturnMessage fromServer = null;
+
         try {
-            s = new Socket(this.hostname, this.port);
-            out = new ObjectOutputStream(s.getOutputStream());
+            /* Establish Connection and sends marshalled call to Server */
+            Socket s = new Socket(this.hostname, this.port);
+            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
-            in = new ObjectInputStream(s.getInputStream());
-            fromServer = (MethodReturnMessage) in.readObject();
+
+            /* Gets return_value packet from Server */
+            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+            MethodReturnMessage fromServer = (MethodReturnMessage) in.readObject();
+
+            /* Close connection */
             in.close();
             out.close();
             s.close();
+
+            /* Return return_value */
             return fromServer.getRet();
 
         } catch (Exception e) {
+            /* Forward Exception to Client */
             throw e;
         }
 	}

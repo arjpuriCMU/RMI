@@ -14,66 +14,60 @@ import java.net.Socket;
  * Created by karansharma on 10/7/14.
  */
 public class Client {
-    public static Object lookup(String hostname, int port, String object_id) throws IOException, ClassNotFoundException {
-        //Create socket connection to server, send marshalled packet, and for returned value
-        Socket s = null;
-        ObjectOutputStream out = null;
-        ObjectInputStream in = null;
-        RegistryJobMessage toServer = new RegistryJobMessage(Job.LOOKUP,null,object_id);
-        RegistryJobMessage fromServer = null;
+
+    /* Wraps Registry lookup for clients */
+    public static Object lookup(String hostname, int port, String object_id) throws Exception {
+        /* Marshalls lookup */
+        RegistryJobMessage toServer = new RegistryJobMessage(Job.LOOKUP, object_id);
         try {
-            s = new Socket(hostname, port);
-            out = new ObjectOutputStream(s.getOutputStream());
+            /* Establish Connection and sends marshalled call to Server */
+            Socket s = new Socket(hostname, port);
+            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
-            in = new ObjectInputStream(s.getInputStream());
-            fromServer = (RegistryJobMessage) in.readObject();
+
+            /* Gets job response packet from Server */
+            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+            RegistryJobMessage fromServer = (RegistryJobMessage) in.readObject();
+
+            /* Close connection */
             in.close();
             out.close();
             s.close();
-            RemoteObjectReference ror = fromServer.getRef();
-            if(ror == null)
-                return null;
-            else
-                return ror.getStub();
+
+            /* Return return_value */
+            return fromServer.getRef().getStub();
 
         } catch (Exception e) {
+            /* Forward Exception to Client */
             throw e;
         }
     }
-    
-    public static String[] list(String hostname, int port) throws IOException, ClassNotFoundException {
-        //Create socket connection to server, send marshalled packet, and for returned value
-        Socket s = null;
-        ObjectOutputStream out = null;
-        ObjectInputStream in = null;
-        RegistryJobMessage toServer = new RegistryJobMessage(Job.LIST,null,null);
-        MethodReturnMessage fromServer = null;
+
+    /* Wraps Registry list function for clients */
+    public static String[] list(String hostname, int port) throws Exception {
+        /* Marshalls list call */
+        RegistryJobMessage toServer = new RegistryJobMessage(Job.LIST, null);
         try {
-            s = new Socket(hostname, port);
-            out = new ObjectOutputStream(s.getOutputStream());
+            /* Establish Connection and sends marshalled call to Server */
+            Socket s = new Socket(hostname, port);
+            ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
             out.writeObject(toServer);
-            in = new ObjectInputStream(s.getInputStream());
-            fromServer = (MethodReturnMessage) in.readObject();
+
+            /* Gets job response packet from Server */
+            ObjectInputStream in = new ObjectInputStream(s.getInputStream());
+            RegistryJobMessage fromServer = (RegistryJobMessage) in.readObject();
+
+            /* Close connection */
             in.close();
             out.close();
             s.close();
-            Object list = fromServer.getRet();
-            if(list == null)
-                return null;
-            else
-            	for (String temp: (String[]) list){
-            		System.out.println(s);
-            	}
-                return (String[]) list;
+
+            /* Return return_value */
+            return fromServer.getList();
 
         } catch (Exception e) {
-            try {
-				throw e;
-			} catch (Exception e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+            /* Forward Exception to Client */
+            throw e;
         }
-		return null;
     }
 }

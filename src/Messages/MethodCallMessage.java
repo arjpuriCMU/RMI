@@ -19,14 +19,16 @@ public class MethodCallMessage implements Serializable{
     public Class<?>[] arg_types;
 
     public MethodCallMessage(String object_id, Method method, Object[] args){
-        this.object_id = object_id;
-        this.method = method.getName();
-        this.args = args;
-        this.arg_types = method.getParameterTypes();
+        this.object_id = object_id;     //Object_id
+        this.method = method.getName(); //Method Name
+        this.args = args;   //Parameters
+        this.arg_types = method.getParameterTypes();  //Types of Parameters
+
+        /* Change any references to other stubs to their RORs */
         for (int i = 0; i < arg_types.length; i++){
             if(Proxy.isProxyClass(args[i].getClass())) //Checks if argument is a stub
             {
-                //sets argument send to ROR of argument object
+                //sets argument sent to ROR of argument object
                 RemoteHandler handler = ((RemoteHandler) Proxy.getInvocationHandler(args[i]));
                 args[i] = new RemoteObjectReference(handler.getHostname(), handler.getPort(),
                         handler.getInterface_Name(), handler.getObject_id());

@@ -6,6 +6,7 @@ public class nthPrimeObject implements Serializable, nthPrimeInterface {
 
 	private static final long serialVersionUID = 3917846667995097277L;
 
+    /* Returns nth prime number */
 	public int nthPrime(int num){
 		int n = 1;
 		int test = 2;
@@ -19,6 +20,8 @@ public class nthPrimeObject implements Serializable, nthPrimeInterface {
 		}
 		return prime;
 	}
+
+    /* Returns true iff n is prime */
 	private boolean isPrime(int n){
 		if (n <= 1){
 			return false;

@@ -19,6 +19,7 @@ public class MethodReturnMessage implements Serializable{
         this.errorMessage = errorMessage;
     }
 
+    /* If exception throw it, otherwise return return_value */
     public Object getRet() throws Exception {
         if(exception)
             throw new Exception(this.errorMessage);
