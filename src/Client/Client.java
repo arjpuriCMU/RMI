@@ -61,6 +61,9 @@ public class Client {
             if(list == null)
                 return null;
             else
+            	for (String temp: (String[]) list){
+            		System.out.println(s);
+            	}
                 return (String[]) list;
 
         } catch (Exception e) {
