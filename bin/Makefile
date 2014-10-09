@@ -18,7 +18,6 @@ CLASSES = \
 	Messages/MethodCallMessage.java \
 	Messages/MethodReturnMessage.java \
 	Messages/RegistryJobMessage.java \
-	Messages/ServerResponse.java \
 	Registry/RemoteHandler.java \
 	Registry/RemoteObjectReference.java \
 	Registry/RMIRegistry.java \
@@ -44,7 +43,6 @@ RMCLASSES = \
 	Messages/MethodCallMessage.class \
 	Messages/MethodReturnMessage.class \
 	Messages/RegistryJobMessage.class \
-	Messages/ServerResponse.class \
 	Registry/RemoteHandler.class \
 	Registry/RemoteObjectReference.class \
 	Registry/RMIRegistry.class \
